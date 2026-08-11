@@ -1,452 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home | 瑋瑋老師的撒野記事錄</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <style>
-    :root {
-      --bg: #f7f5ef;
-      --card: #ffffff;
-      --text: #2f3a33;
-      --muted: #66756b;
-      --line: #dfe6df;
-      --accent: #5d7a67;
-      --accent-soft: #e8efe8;
-      --max: 960px;
-      --radius: 18px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", "Noto Sans TC", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { width: min(92%, var(--max)); margin: 0 auto; }
-
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(247, 245, 239, 0.94);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      gap: 18px;
-    }
-    .brand {
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .menu {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-    .menu a { transition: color 0.2s ease; }
-    .menu a:hover { color: var(--accent); }
-
-    .hero { padding: 72px 0 40px; }
-    .hero-box {
-      background: linear-gradient(135deg, #eef4ee, #fbfaf6);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 40px 28px;
-    }
-    h1, h2, h3 { line-height: 1.25; margin: 0 0 14px; }
-    h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
-    h2 { font-size: 1.4rem; margin-bottom: 12px; }
-    p { margin: 0 0 14px; }
-    .lead {
-      color: var(--muted);
-      max-width: 720px;
-      font-size: 1.05rem;
-    }
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 22px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: white;
-      font-weight: 600;
-      transition: transform 0.15s ease;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn.secondary { background: transparent; color: var(--accent); }
-
-    .section { padding: 20px 0 12px; }
-    .carousel-section { padding: 4px 0 20px; }
-    .carousel-shell {
-      position: relative;
-      overflow: hidden;
-      border-radius: 24px;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.1);
-      background: #dfe6df;
-      touch-action: pan-y;
-      cursor: grab;
-      user-select: none;
-    }
-    .carousel-shell:active { cursor: grabbing; }
-    .carousel-track {
-      display: flex;
-      transition: transform 0.55s ease;
-      will-change: transform;
-    }
-    .slide {
-      min-width: 100%;
-      aspect-ratio: 16 / 6;
-      flex: 0 0 100%;
-    }
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-      -webkit-user-drag: none;
-    }
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .carousel-dots button {
-      width: 10px;
-      height: 10px;
-      border: none;
-      border-radius: 999px;
-      background: #c8d4cb;
-      cursor: pointer;
-      padding: 0;
-    }
-    .carousel-dots button.active { background: var(--accent); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 20px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.03);
-    }
-    .card .icon { font-size: 1.4rem; margin-bottom: 10px; }
-    .card p { color: var(--muted); min-height: 72px; }
-    .card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 0.9rem;
-      transition: transform 0.15s ease, background-color 0.2s ease;
-    }
-    .card-link:hover {
-      transform: translateY(-1px);
-      background: #dbe8dc;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-    .social-links a {
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 1.08rem;
-      transition: transform 0.15s ease, background-color 0.2s ease;
-    }
-    .social-links a:hover {
-      transform: translateY(-2px);
-      background: #dbe8dc;
-    }
-
-    footer {
-      padding: 40px 0 48px;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .footer-left { display: grid; gap: 8px; }
-    .footer-links {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .footer-links a {
-      color: var(--muted);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .footer-links a:hover { color: var(--accent); }
-
-    @media (max-width: 820px) {
-      .cards { grid-template-columns: 1fr; }
-      .hero { padding: 48px 0 30px; }
-      .hero-box { padding: 30px 22px; }
-      .slide { aspect-ratio: 16 / 6.6; }
-      .card p { min-height: auto; }
-    }
-
-    @media (max-width: 640px) {
-      .nav-inner {
-        display: block;
-        padding: 10px 0 8px;
-      }
-      .brand {
-        display: block;
-        font-size: 0.96rem;
-        white-space: nowrap;
-        margin-bottom: 6px;
-      }
-      .menu {
-        width: 100%;
-        gap: 18px;
-        flex-wrap: nowrap;
-        white-space: nowrap;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        font-size: 0.88rem;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-      }
-      .menu::-webkit-scrollbar { display: none; }
-
-      .hero { padding-top: 34px; }
-      h1 { font-size: clamp(1.9rem, 9vw, 2.45rem); }
-      .lead { font-size: 1rem; }
-      .actions { gap: 10px; }
-      .btn { padding: 10px 15px; font-size: 0.94rem; }
-      .slide { aspect-ratio: 16 / 8.2; }
-      .footer-inner { align-items: flex-start; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>服務條款｜瑋瑋老師的撒野記事錄</title>
+<meta name="description" content="瑋瑋老師的撒野記事錄網站與活動報名服務條款">
+<style>
+:root{
+  --bg:#f7f5ef;
+  --card:#ffffff;
+  --text:#2f3a33;
+  --muted:#66756b;
+  --line:#dfe6df;
+  --accent:#5d7a67;
+  --accent-soft:#e8efe8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  line-height:1.8;
+}
+header{
+  background:rgba(247,245,239,.96);
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.nav{
+  max-width:1080px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{font-weight:800;text-decoration:none;color:var(--text)}
+.menu{display:flex;gap:18px;flex-wrap:wrap}
+.menu a{color:var(--muted);text-decoration:none}
+.menu a:hover{color:var(--accent)}
+main{max-width:860px;margin:42px auto;padding:0 20px 60px}
+.hero{
+  background:var(--accent-soft);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px 30px;
+  margin-bottom:22px;
+}
+.hero h1{margin:0 0 8px;font-size:2rem}
+.hero p{margin:0;color:var(--muted)}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px 30px;
+  margin:18px 0;
+  box-shadow:0 8px 24px rgba(47,58,51,.04);
+}
+h2{font-size:1.25rem;margin:4px 0 12px}
+h3{font-size:1.05rem;margin:22px 0 8px}
+ul{padding-left:1.4rem}
+a{color:var(--accent)}
+.small{font-size:.92rem;color:var(--muted)}
+footer{
+  max-width:860px;
+  margin:0 auto;
+  padding:0 20px 36px;
+  color:var(--muted);
+  font-size:.9rem;
+}
+@media(max-width:650px){
+  .nav{align-items:flex-start;flex-direction:column}
+  .hero,.card{padding:22px 20px}
+  .hero h1{font-size:1.65rem}
+}
+</style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="wrap nav-inner">
-      <div class="brand">瑋瑋老師的撒野記事錄</div>
-      <div class="menu" aria-label="主選單">
-        <a href="https://www.weiweipaigu.com">Home</a>
-        <a href="https://calendar.weiweipaigu.com">Calendar</a>
-        <a href="https://shopping.weiweipaigu.com">Shopping</a>
-        <a href="https://about.weiweipaigu.com">About</a>
-      </div>
-    </div>
-  </nav>
 
-  <header class="hero">
-    <div class="wrap">
-      <div class="hero-box">
-        <h1>想一起去撒野嗎？</h1>
-        <p class="lead">
-          我是瑋瑋老師，平常的工作就是把生態學搬進生活裡：帶親子去野外找生物、陪大人走讀城市，
-          也到各級學校、企業做課程、講座與 CSR 活動。想邀課、包團、預約活動或談合作，都歡迎直接寫信給我。<p>
-          有公開名額的場次則會放在 Calendar 裡，大家可以自己挑喜歡的時間來玩。<p>
-          產品合作也歡迎來訊——如果寄了 Email 卻沒回覆，請再敲一下粉專，不然它又可能被垃圾信件吃掉 Q__Q
-        </p>
-        <div class="actions">
-          <a class="btn" href="https://calendar.weiweipaigu.com">看看最近去哪裡撒野</a>
-          <a class="btn secondary" href="mailto:wesker.hung@outlook.com">寫信預約／合作</a>
-        </div>
-      </div>
-    </div>
-  </header>
+<header>
+  <div class="nav">
+    <a class="brand" href="https://weiweipaigu.github.io/home/">瑋瑋老師的撒野記事錄</a>
+    <nav class="menu">
+      <a href="https://weiweipaigu.github.io/home/">Home</a>
+      <a href="https://weiweipaigu.github.io/calendar/">Calendar</a>
+      <a href="https://weiweipaigu.github.io/shopping/">Shopping</a>
+      <a href="https://weiweipaigu.github.io/about/">About</a>
+    </nav>
+  </div>
+</header>
 
-  <section class="carousel-section">
-    <div class="wrap">
-      <div class="carousel-shell" id="carouselShell" aria-label="活動照片輪播，可左右滑動">
-        <div class="carousel-track" id="carouselTrack">
-          <div class="slide"><img src="images/banner1.jpg" alt="首頁輪播照片 1" /></div>
-          <div class="slide"><img src="images/banner2.jpg" alt="首頁輪播照片 2" /></div>
-          <div class="slide"><img src="images/banner3.jpg" alt="首頁輪播照片 3" /></div>
-          <div class="slide"><img src="images/banner4.jpg" alt="首頁輪播照片 4" /></div>
-          <div class="slide"><img src="images/banner5.jpg" alt="首頁輪播照片 5" /></div>
-          <div class="slide"><img src="images/banner6.jpg" alt="首頁輪播照片 6" /></div>
-          <div class="slide"><img src="images/banner7.jpg" alt="首頁輪播照片 7" /></div>
-        </div>
-      </div>
-      <div class="carousel-dots" id="carouselDots"></div>
-    </div>
+<main>
+  <section class="hero">
+    <h1>服務條款</h1>
+    <p>Terms of Service</p>
   </section>
 
-  <main>
-    <section class="section">
-      <div class="wrap">
-        <h2>快速入口</h2>
-        <div class="cards">
-          <article class="card">
-            <div class="icon">📅</div>
-            <h3>Calendar</h3>
-            <p>公開活動、近期場次與還有名額的行程，都整理在這裡。</p>
-            <a class="card-link" href="https://calendar.weiweipaigu.com">前往 Calendar <span aria-hidden="true">→</span></a>
-          </article>
+  <section class="card">
+    <p>歡迎使用「瑋瑋老師的撒野記事錄」網站與活動報名服務。使用本網站或送出活動報名，即表示您理解並同意以下條款。</p>
+    <p class="small">最後更新日期：2026 年 8 月 10 日</p>
+  </section>
 
-          <article class="card">
-            <div class="icon">🛍</div>
-            <h3>Shopping</h3>
-            <p>合作商品、團購資訊與購買入口，想找優惠可以從這邊進去。</p>
-            <a class="card-link" href="https://shopping.weiweipaigu.com">前往 Shopping <span aria-hidden="true">→</span></a>
-          </article>
+  <section class="card">
+    <h2>一、服務內容</h2>
+    <p>本網站提供生態活動資訊、活動行事曆、報名資料提交與相關通知等功能。實際活動內容、時間、集合方式與費用，以各活動頁面及主辦方通知為準。</p>
+  </section>
 
-          <article class="card">
-            <div class="icon">👤</div>
-            <h3>About me</h3>
-            <p>瑋瑋老師是誰？平常到底都在幹嘛？這裡一次看完。</p>
-            <a class="card-link" href="https://about.weiweipaigu.com">關於瑋瑋老師的兩三事 <span aria-hidden="true">→</span></a>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
+  <section class="card">
+    <h2>二、報名資料</h2>
+    <p>報名者應提供正確且可聯絡的資料。若資料錯誤、缺漏或無法聯繫，可能影響報名確認、匯款通知與行前資訊傳遞。</p>
+  </section>
 
-  <footer>
-    <div class="wrap footer-inner">
-      <div class="footer-left">
-        <div>© 2026 瑋瑋老師的撒野記事錄 · Built with GitHub Pages</div>
-        <div class="social-links" aria-label="社群與聯絡方式">
-          <a href="mailto:wesker.hung@outlook.com" aria-label="Email" title="Email"><i class="fa-solid fa-envelope"></i></a>
-          <a href="https://www.facebook.com/weiweipaigu" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/weiweipaigu/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@weiweipaigu" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
+  <section class="card">
+    <h2>三、報名與名額</h2>
+    <p>系統顯示的剩餘名額依當下資料庫狀態計算。報名是否完成，以系統成功建立報名紀錄為準。</p>
+    <p>主辦方得因天候、安全、生態環境、場地限制或其他不可抗力因素調整、延期或取消活動。</p>
+  </section>
 
-      <div class="footer-links" aria-label="Legal">
-        <a href="https://privacy.weiweipaigu.com">隱私權政策</a>
-        <a href="https://terms.weiweipaigu.com">服務條款</a>
-      </div>
-    </div>
-  </footer>
+  <section class="card">
+    <h2>四、費用與匯款</h2>
+    <p>如活動需收費，匯款方式、期限與費用說明將於活動頁面、報名確認信或後續通知中提供。報名者應依通知內容完成相關程序。</p>
+  </section>
 
-  <script>
-    const shell = document.getElementById("carouselShell");
-    const track = document.getElementById("carouselTrack");
-    const dotsWrap = document.getElementById("carouselDots");
-    const totalSlides = track.children.length;
+  <section class="card">
+    <h2>五、活動安全</h2>
+    <p>自然觀察與戶外活動可能涉及天候、地形、動植物及其他環境風險。參加者應依自身健康與能力評估是否適合參加，並遵守現場講師或工作人員之安全指示。</p>
+  </section>
 
-    let currentIndex = 0;
-    let autoPlay;
-    let pointerStartX = null;
-    let pointerStartY = null;
+  <section class="card">
+    <h2>六、網站與通知服務</h2>
+    <p>本系統會使用 E-mail 寄送報名確認與活動相關通知。因收件者信箱設定、垃圾郵件過濾、網路或第三方服務異常而導致延遲或未送達時，主辦方將在合理範圍內協助處理。</p>
+  </section>
 
-    function buildDots() {
-      for (let i = 0; i < totalSlides; i += 1) {
-        const dot = document.createElement("button");
-        dot.setAttribute("aria-label", `前往第 ${i + 1} 張照片`);
-        dot.addEventListener("click", () => {
-          currentIndex = i;
-          updateCarousel();
-          restartAutoPlay();
-        });
-        dotsWrap.appendChild(dot);
-      }
-    }
+  <section class="card">
+    <h2>七、智慧財產</h2>
+    <p>除另有標示外，本網站之文字、圖片、活動介紹及其他原創內容，其相關權利由原作者或合法權利人持有。未經許可，不得任意大量重製、散布或作商業使用。</p>
+  </section>
 
-    function updateCarousel() {
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-      [...dotsWrap.children].forEach((dot, index) => {
-        dot.classList.toggle("active", index === currentIndex);
-      });
-    }
+  <section class="card">
+    <h2>八、隱私</h2>
+    <p>本網站如何蒐集與使用個人資料，請參閱
+      <a href="https://weiweipaigu.github.io/privacy/">隱私權政策</a>。
+    </p>
+  </section>
 
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateCarousel();
-    }
+  <section class="card">
+    <h2>九、條款更新</h2>
+    <p>本條款可能依服務內容、法令或實際營運需求調整。最新版將公布於本頁面。</p>
+  </section>
 
-    function previousSlide() {
-      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-      updateCarousel();
-    }
-
-    function restartAutoPlay() {
-      clearInterval(autoPlay);
-      autoPlay = setInterval(nextSlide, 3500);
-    }
-
-    shell.addEventListener("pointerdown", (event) => {
-      pointerStartX = event.clientX;
-      pointerStartY = event.clientY;
-    });
-
-    shell.addEventListener("pointerup", (event) => {
-      if (pointerStartX === null || pointerStartY === null) return;
-
-      const deltaX = event.clientX - pointerStartX;
-      const deltaY = event.clientY - pointerStartY;
-
-      pointerStartX = null;
-      pointerStartY = null;
-
-      if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
-
-      if (deltaX < 0) {
-        nextSlide();
-      } else {
-        previousSlide();
-      }
-
-      restartAutoPlay();
-    });
-
-    shell.addEventListener("pointercancel", () => {
-      pointerStartX = null;
-      pointerStartY = null;
-    });
-
-    shell.addEventListener("mouseenter", () => clearInterval(autoPlay));
-    shell.addEventListener("mouseleave", restartAutoPlay);
-
-    buildDots();
-    updateCarousel();
-    restartAutoPlay();
-  </script>
+  <section class="card">
+    <h2>十、聯絡方式</h2>
+    <p><strong>瑋瑋老師的撒野記事錄</strong><br>
+    E-mail：<a href="mailto:weiweipaigu@gmail.com">weiweipaigu@gmail.com</a></p>
+  </section>
+</main>
+<footer>© 2026 瑋瑋老師的撒野記事錄</footer>
 </body>
 </html>
